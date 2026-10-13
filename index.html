@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THALES Information Systems - Inventário</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ecrã de Login -->
+  <div id="login-modal">
+    <div class="login-box">
+      <h2>THALES</h2>
+      <p>INFORMATION SYSTEMS<br>Insira suas credenciais para aceder</p>
+      
+      <form id="login-form" onsubmit="tentarLogin(event)">
+        <div class="input-group">
+          <label for="login-user">Nome de Utilizador / E-mail:</label>
+          <input type="text" id="login-user" required>
+        </div>
+        
+        <div class="input-group">
+          <label for="login-pass">Palavra-passe:</label>
+          <input type="password" id="login-pass" required placeholder="********">
+        </div>
+        
+        <button type="submit" class="btn-login">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Painel Principal do Inventário -->
+  <div id="app-container">
+    <h1>THALES Information Systems - Inventário</h1>
+    
+    <!-- Formulário para Adicionar/Atualizar Equipamento -->
+    <form id="inventory-form">
+      <input type="text" id="nome" placeholder="Nome do Equipamento" required>
+      <input type="number" id="quantidade" placeholder="Quantidade" min="1" required>
+      <select id="status" required>
+        <option value="">Selecione o Status</option>
+        <option value="Disponível">Disponível</option>
+        <option value="Em Uso">Em Uso</option>
+        <option value="Manutenção">Manutenção</option>
+      </select>
+      <input type="text" id="responsavel" placeholder="Responsável">
+      <button type="submit">Adicionar</button>
+    </form>
+
+    <!-- Tabela de Inventário -->
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Quantidade</th>
+          <th>Status</th>
+          <th>Responsável</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="inventory-body">
+        <!-- Os dados do Google Sheets aparecem aqui automaticamente -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Importação do Script -->
+  <script src="script.js"></script>
+</body>
+</html>
