@@ -5,26 +5,31 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwtYpNoU1FvhZGCayh9BVIC
 const form = document.getElementById("inventory-form");
 const tableBody = document.getElementById("inventory-body");
 
-// Função de Login
-function tentarLogin(event) {
+// Função de Login Segura (Validada no Servidor)
+async function tentarLogin(event) {
   if (event) event.preventDefault();
   
-  const userInput = document.getElementById("login-user")?.value || document.querySelector("input[type='text']")?.value || "";
-  const passInput = document.getElementById("login-pass")?.value || document.querySelector("input[type='password']")?.value || "";
+  const userInput = document.getElementById("login-user")?.value.trim() || "";
+  const passInput = document.getElementById("login-pass")?.value.trim() || "";
 
-  const USER_VALIDO = "@Thales";
-  const SENHA_VALIDA = "@Thales2026!";
+  try {
+    const response = await fetch(`${API_URL}?action=login&user=${encodeURIComponent(userInput)}&pass=${encodeURIComponent(passInput)}`);
+    const resultado = await response.json();
 
-  if (userInput.trim() === USER_VALIDO && passInput.trim() === SENHA_VALIDA) {
-    const modalLogin = document.getElementById("login-modal") || document.querySelector(".login-box")?.parentElement;
-    if (modalLogin) modalLogin.style.display = "none";
-    
-    const appContainer = document.getElementById("app-container");
-    if (appContainer) appContainer.style.display = "block";
-    
-    carregarEquipamentos();
-  } else {
-    alert("Credenciais incorretas! Utilize @Thales e @Thales2026!");
+    if (resultado.status === "sucesso") {
+      const modalLogin = document.getElementById("login-modal") || document.querySelector(".login-box")?.parentElement;
+      if (modalLogin) modalLogin.style.display = "none";
+      
+      const appContainer = document.getElementById("app-container");
+      if (appContainer) appContainer.style.display = "block";
+      
+      carregarEquipamentos();
+    } else {
+      alert("Credenciais incorretas.");
+    }
+  } catch (error) {
+    console.error("Erro ao validar login:", error);
+    alert("Erro de conexão ao tentar fazer login.");
   }
 }
 
