@@ -1,5 +1,5 @@
-// ATENÇÃO: Substitua pelo link do seu Web App do Google Apps Script
-const URL_API = "COLOQUE_AQUI_O_LINK_DO_SEU_WEB_APP_DO_APPS_SCRIPT";
+// Link do seu Web App do Google Apps Script configurado
+const URL_API = "https://script.google.com/macros/s/AKfycbwtYpNoU1FvhZGCayh9BVICbfoZUJbXENpc4bJz6NrdAbEPQ-jJ80ZoVeNGLL8kGQk5/exec";
 
 // Função de Login Seguro
 function tentarLogin(event) {
