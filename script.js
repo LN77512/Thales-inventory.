@@ -85,7 +85,7 @@ function salvarItem(event) {
     .then(data => {
         if (data.sucesso) {
             document.getElementById('inventoryForm').reset();
-            document.getElementById('itemId').readOnly = false; // Restaura o ID caso estivesse a editar
+            document.getElementById('itemId').readOnly = false;
             carregarItens();
         } else {
             alert("Erro ao guardar item.");
@@ -97,7 +97,7 @@ function salvarItem(event) {
 // Preencher o formulário para edição rápida
 function preencherEdicao(id, nome, quantidade, status, responsavel) {
     document.getElementById('itemId').value = id;
-    document.getElementById('itemId').readOnly = true; // Bloqueia o ID para atualizar o registo correto
+    document.getElementById('itemId').readOnly = true;
     document.getElementById('itemNome').value = nome;
     document.getElementById('itemQtd').value = quantidade;
     document.getElementById('itemStatus').value = status;
@@ -135,7 +135,7 @@ function filtrarTabela() {
         const colunas = linhas[i].getElementsByTagName('td');
         let encontrou = false;
 
-        for (let j = 0; j < colunas.length - 1; j++) { // Ignora a última coluna de ações
+        for (let j = 0; j < colunas.length - 1; j++) { // Ignora a coluna de ações
             if (colunas[j]) {
                 const textoColuna = colunas[j].textContent || colunas[j].innerText;
                 if (textoColuna.toLowerCase().indexOf(filter) > -1) {

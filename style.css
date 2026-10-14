@@ -135,7 +135,7 @@ header h1 {
     margin-bottom: 25px;
 }
 
-/* Formulário na Horizontal como tinha antes */
+/* Formulário Horizontal */
 .form-grid-horizontal {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 1.5fr 2fr auto;
@@ -164,26 +164,40 @@ header h1 {
     background-color: #218838;
 }
 
-/* Estilo da Barra de Pesquisa */
+/* Estilo Exato da Barra de Pesquisa Pedida (Escura e Arredondada) */
 .search-container {
-    margin-bottom: 20px;
+    position: relative;
+    margin-bottom: 25px;
 }
 
 .search-container input {
     width: 100%;
-    padding: 12px 15px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 14px 20px 14px 48px; /* Espaço à esquerda para o ícone da lupa */
+    font-size: 15px;
+    color: #fff;
+    background-color: #555c63; /* Tom cinza-escuro elegante */
+    border: none;
+    border-radius: 30px; /* Bordas bem arredondadas */
     outline: none;
     transition: all 0.3s ease;
-    background-color: #fafafa;
+}
+
+.search-container input::placeholder {
+    color: #d1d5db; /* Cor suave para o texto de aviso */
 }
 
 .search-container input:focus {
-    border-color: #0055a5;
-    background-color: #fff;
-    box-shadow: 0 0 5px rgba(0, 85, 165, 0.2);
+    background-color: #4a5158;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+.search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #d1d5db;
+    font-size: 16px;
 }
 
 .table-responsive {
