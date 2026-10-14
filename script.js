@@ -122,28 +122,3 @@ function removerItem(id) {
     })
     .catch(error => console.error("Erro:", error));
 }
-
-// Função para filtrar a tabela em tempo real com a barra de pesquisa
-function filtrarTabela() {
-    const input = document.getElementById('searchInput');
-    const filter = input.value.toLowerCase();
-    const tbody = document.getElementById('tableBody');
-    const linhas = tbody.getElementsByTagName('tr');
-
-    for (let i = 0; i < linhas.length; i++) {
-        const colunas = linhas[i].getElementsByTagName('td');
-        let encontrou = false;
-
-        for (let j = 0; j < colunas.length - 1; j++) {
-            if (colunas[j]) {
-                const textoColuna = colunas[j].textContent || colunas[j].innerText;
-                if (textoColuna.toLowerCase().indexOf(filter) > -1) {
-                    encontrou = true;
-                    break;
-                }
-            }
-        }
-
-        linhas[i].style.display = encontrou ? "" : "none";
-    }
-}
