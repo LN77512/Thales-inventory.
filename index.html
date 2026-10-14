@@ -1,101 +1,80 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THALES Information Systems - Inventário</title>
-    <!-- Ícones para a barra de pesquisa -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="estilo.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THALES Information Systems - Inventário</title>
+  <!-- Ícones para a barra de pesquisa -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Tela de Login -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-box">
-            <h2>🔐 Login - Thales</h2>
-            <p>Insira as suas credenciais para aceder ao sistema</p>
-            <form id="loginForm" onsubmit="realizarLogin(event)">
-                <div class="input-group">
-                    <label for="username">Utilizador</label>
-                    <input type="text" id="username" required placeholder="Digite o utilizador">
-                </div>
-                <div class="input-group">
-                    <label for="password">Palavra-passe</label>
-                    <input type="password" id="password" required placeholder="Digite a palavra-passe">
-                </div>
-                <button type="submit" class="btn-login">Entrar</button>
-                <p id="loginError" class="error-msg"></p>
-            </form>
+  <!-- Ecrã de Login -->
+  <div id="login-modal">
+    <div class="login-box">
+      <h2>THALES</h2>
+      <p>INFORMATION SYSTEMS<br>Insira suas credenciais para aceder</p>
+      
+      <form id="login-form" onsubmit="tentarLogin(event)">
+        <div class="input-group">
+          <label for="login-user">Nome de Utilizador / E-mail:</label>
+          <input type="text" id="login-user" required>
         </div>
+        
+        <div class="input-group">
+          <label for="login-pass">Palavra-passe:</label>
+          <input type="password" id="login-pass" required placeholder="********">
+        </div>
+        
+        <button type="submit" class="btn-login">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Painel Principal do Inventário -->
+  <div id="app-container" style="display: none;">
+    <h1>THALES Information Systems - Inventário</h1>
+    
+    <!-- Formulário para Adicionar/Atualizar Equipamento -->
+    <form id="inventory-form" onsubmit="salvarItem(event)">
+      <input type="text" id="nome" placeholder="Nome do Equipamento" required>
+      <input type="number" id="quantidade" placeholder="Quantidade" min="1" required>
+      <select id="status" required>
+        <option value="">Selecione o Status</option>
+        <option value="Disponível">Disponível</option>
+        <option value="Em Uso">Em Uso</option>
+        <option value="Manutenção">Manutenção</option>
+      </select>
+      <input type="text" id="responsavel" placeholder="Responsável">
+      <button type="submit">Adicionar</button>
+    </form>
+
+    <!-- Barra de Pesquisa Estilizada (Escura e Arredondada) -->
+    <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" onkeyup="filtrarTabela()" placeholder="Pesquisar por ID, Nome, Status ou Responsável...">
     </div>
 
-    <!-- Conteúdo Principal do Inventário (Oculto até fazer login) -->
-    <div id="appContainer" class="app-container" style="display: none;">
-        <header>
-            <h1>THALES Information Systems - Inventário</h1>
-            <button onclick="realizarLogout()" class="btn-logout">Terminar Sessão</button>
-        </header>
+    <!-- Tabela de Inventário -->
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Quantidade</th>
+          <th>Status</th>
+          <th>Responsável</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="inventory-body">
+        <!-- Os dados do Google Sheets aparecem aqui automaticamente -->
+      </tbody>
+    </table>
+  </div>
 
-        <main>
-            <!-- Formulário para Adicionar / Registar Item -->
-            <section class="form-section">
-                <form id="inventoryForm" onsubmit="salvarItem(event)">
-                    <div class="form-grid-horizontal">
-                        <div class="input-group">
-                            <input type="text" id="itemId" required placeholder="ID">
-                        </div>
-                        <div class="input-group">
-                            <input type="text" id="itemNome" required placeholder="Nome">
-                        </div>
-                        <div class="input-group">
-                            <input type="number" id="itemQtd" required placeholder="Quantidade" min="0">
-                        </div>
-                        <div class="input-group">
-                            <select id="itemStatus" required>
-                                <option value="" disabled selected>Selecione o Status</option>
-                                <option value="Disponível">Disponível</option>
-                                <option value="Em Uso">Em Uso</option>
-                                <option value="Manutenção">Manutenção</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" id="itemResp" required placeholder="Responsável">
-                        </div>
-                        <button type="submit" class="btn-salvar">Adicionar</button>
-                    </div>
-                </form>
-            </section>
-
-            <!-- Seção da Tabela e Barra de Pesquisa Estilizada -->
-            <section class="table-section">
-                
-                <div class="search-container">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" id="searchInput" onkeyup="filtrarTabela()" placeholder="Pesquisar por ID, Nome, Status ou Responsável...">
-                </div>
-
-                <div class="table-responsive">
-                    <table id="inventoryTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nome</th>
-                                <th>Quantidade</th>
-                                <th>Status</th>
-                                <th>Responsável</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <!-- Os dados do Google Sheets aparecem aqui dinamicamente -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <script src="script.js"></script>
+  <!-- Importação do Script -->
+  <script src="script.js"></script>
 </body>
 </html>

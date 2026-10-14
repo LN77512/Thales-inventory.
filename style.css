@@ -8,15 +8,21 @@
 body {
     background-color: #f4f6f9;
     color: #333;
+    padding: 20px;
 }
 
-/* Estilos da Tela de Login */
-.login-container {
+/* Ecrã de Login */
+#login-modal {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background: linear-gradient(135deg, #003366, #0055a5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .login-box {
@@ -30,12 +36,12 @@ body {
 }
 
 .login-box h2 {
-    margin-bottom: 10px;
     color: #003366;
+    margin-bottom: 5px;
 }
 
 .login-box p {
-    font-size: 14px;
+    font-size: 13px;
     color: #666;
     margin-bottom: 20px;
 }
@@ -53,7 +59,7 @@ body {
     color: #444;
 }
 
-.input-group input, .input-group select {
+.input-group input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -62,7 +68,7 @@ body {
     outline: none;
 }
 
-.input-group input:focus, .input-group select:focus {
+.input-group input:focus {
     border-color: #0055a5;
     box-shadow: 0 0 5px rgba(0, 85, 165, 0.3);
 }
@@ -84,70 +90,41 @@ body {
     background-color: #002244;
 }
 
-.error-msg {
-    color: #d9534f;
-    font-size: 13px;
-    margin-top: 10px;
-}
-
 /* Painel Principal */
-.app-container {
+#app-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
 }
 
-header {
+h1 {
+    color: #003366;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Formulário de Inventário */
+#inventory-form {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #003366;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
+    gap: 10px;
     margin-bottom: 25px;
-}
-
-header h1 {
-    font-size: 22px;
-}
-
-.btn-logout {
-    background-color: #d9534f;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.btn-logout:hover {
-    background-color: #c9302c;
-}
-
-/* Secção de Formulários e Tabelas */
-.form-section, .table-section {
     background: white;
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    margin-bottom: 25px;
+    flex-wrap: wrap;
 }
 
-/* Formulário Horizontal */
-.form-grid-horizontal {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1.5fr 2fr auto;
-    gap: 12px;
-    align-items: center;
+#inventory-form input, #inventory-form select {
+    flex: 1;
+    min-width: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
 }
 
-.form-grid-horizontal .input-group {
-    margin-bottom: 0;
-}
-
-.btn-salvar {
+#inventory-form button {
     background-color: #28a745;
     color: white;
     border: none;
@@ -157,14 +134,13 @@ header h1 {
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s;
-    height: 41px;
 }
 
-.btn-salvar:hover {
+#inventory-form button:hover {
     background-color: #218838;
 }
 
-/* Estilo Exato da Barra de Pesquisa Pedida (Escura e Arredondada) */
+/* Barra de Pesquisa Estilizada (Escura e Arredondada) */
 .search-container {
     position: relative;
     margin-bottom: 25px;
@@ -172,18 +148,18 @@ header h1 {
 
 .search-container input {
     width: 100%;
-    padding: 14px 20px 14px 48px; /* Espaço à esquerda para o ícone da lupa */
+    padding: 14px 20px 14px 48px;
     font-size: 15px;
     color: #fff;
-    background-color: #555c63; /* Tom cinza-escuro elegante */
+    background-color: #555c63;
     border: none;
-    border-radius: 30px; /* Bordas bem arredondadas */
+    border-radius: 30px;
     outline: none;
     transition: all 0.3s ease;
 }
 
 .search-container input::placeholder {
-    color: #d1d5db; /* Cor suave para o texto de aviso */
+    color: #d1d5db;
 }
 
 .search-container input:focus {
@@ -200,18 +176,19 @@ header h1 {
     font-size: 16px;
 }
 
-.table-responsive {
-    overflow-x: auto;
-}
-
+/* Tabela de Inventário */
 table {
     width: 100%;
     border-collapse: collapse;
-    text-align: left;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 table th, table td {
-    padding: 12px;
+    padding: 12px 15px;
+    text-align: left;
     border-bottom: 1px solid #eee;
     font-size: 14px;
 }
@@ -222,22 +199,6 @@ table th {
 }
 
 /* Botões de Ação na Tabela */
-.btn-editar {
-    background-color: #f0ad4e;
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    margin-right: 5px;
-    font-weight: bold;
-}
-
-.btn-editar:hover {
-    background-color: #ec971f;
-}
-
 .btn-remover {
     background-color: #d9534f;
     color: white;
@@ -251,14 +212,4 @@ table th {
 
 .btn-remover:hover {
     background-color: #c9302c;
-}
-
-/* Responsivo para telemóveis */
-@media (max-width: 900px) {
-    .form-grid-horizontal {
-        grid-template-columns: 1fr;
-    }
-    .btn-salvar {
-        width: 100%;
-    }
 }
