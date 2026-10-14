@@ -1,4 +1,4 @@
-// ATENÇÃO: Substitua pelo URL do seu Web App do Google Apps Script
+// ATENÇÃO: Mantenha aqui o link do seu Web App do Google Apps Script
 const URL_API = "COLOQUE_AQUI_O_LINK_DO_SEU_WEB_APP_DO_APPS_SCRIPT";
 
 // Função de Login Seguro via Servidor
@@ -53,7 +53,10 @@ function carregarItens() {
                 <td>${item.quantidade}</td>
                 <td>${item.status}</td>
                 <td>${item.responsavel}</td>
-                <td><button class="btn-remover" onclick="removerItem('${item.id}')">Excluir</button></td>
+                <td>
+                    <button class="btn-editar" onclick="preencherEdicao('${item.id}', '${item.nome}', '${item.quantidade}', '${item.status}', '${item.responsavel}')">Editar</button>
+                    <button class="btn-remover" onclick="removerItem('${item.id}')">Remover</button>
+                </td>
             `;
             tbody.appendChild(tr);
         });
@@ -82,12 +85,24 @@ function salvarItem(event) {
     .then(data => {
         if (data.sucesso) {
             document.getElementById('inventoryForm').reset();
+            document.getElementById('itemId').readOnly = false; // Restaura o ID caso estivesse a editar
             carregarItens();
         } else {
             alert("Erro ao guardar item.");
         }
     })
     .catch(error => console.error("Erro:", error));
+}
+
+// Preencher o formulário para edição rápida
+function preencherEdicao(id, nome, quantidade, status, responsavel) {
+    document.getElementById('itemId').value = id;
+    document.getElementById('itemId').readOnly = true; // Bloqueia o ID para atualizar o registo correto
+    document.getElementById('itemNome').value = nome;
+    document.getElementById('itemQtd').value = quantidade;
+    document.getElementById('itemStatus').value = status;
+    document.getElementById('itemResp').value = responsavel;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // Remover um item

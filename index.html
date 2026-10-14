@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventário - Thales</title>
+    <title>THALES Information Systems - Inventário</title>
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
@@ -31,50 +31,44 @@
     <!-- Conteúdo Principal do Inventário (Oculto até fazer login) -->
     <div id="appContainer" class="app-container" style="display: none;">
         <header>
-            <h1>📦 Sistema de Inventário - Thales</h1>
+            <h1>THALES Information Systems - Inventário</h1>
             <button onclick="realizarLogout()" class="btn-logout">Terminar Sessão</button>
         </header>
 
         <main>
             <!-- Formulário para Adicionar / Registar Item -->
             <section class="form-section">
-                <h2>Registar / Atualizar Equipamento</h2>
                 <form id="inventoryForm" onsubmit="salvarItem(event)">
-                    <div class="form-grid">
+                    <div class="form-grid-horizontal">
                         <div class="input-group">
-                            <label for="itemId">ID do Item</label>
-                            <input type="text" id="itemId" required placeholder="Ex: TH-001">
+                            <input type="text" id="itemId" required placeholder="ID">
                         </div>
                         <div class="input-group">
-                            <label for="itemNome">Nome</label>
-                            <input type="text" id="itemNome" required placeholder="Nome do equipamento">
+                            <input type="text" id="itemNome" required placeholder="Nome">
                         </div>
                         <div class="input-group">
-                            <label for="itemQtd">Quantidade</label>
                             <input type="number" id="itemQtd" required placeholder="Quantidade" min="0">
                         </div>
                         <div class="input-group">
-                            <label for="itemStatus">Status</label>
                             <select id="itemStatus" required>
+                                <option value="" disabled selected>Selecione o Status</option>
                                 <option value="Disponível">Disponível</option>
                                 <option value="Em Uso">Em Uso</option>
                                 <option value="Manutenção">Manutenção</option>
                             </select>
                         </div>
                         <div class="input-group">
-                            <label for="itemResp">Responsável</label>
-                            <input type="text" id="itemResp" required placeholder="Nome do responsável">
+                            <input type="text" id="itemResp" required placeholder="Responsável">
                         </div>
+                        <button type="submit" class="btn-salvar">Adicionar</button>
                     </div>
-                    <button type="submit" class="btn-salvar">Guardar Item</button>
                 </form>
             </section>
 
             <!-- Seção da Tabela e Barra de Pesquisa -->
             <section class="table-section">
-                <h2>Lista de Equipamentos</h2>
                 
-                <!-- Barra de Pesquisa -->
+                <!-- Barra de Pesquisa posicionado logo acima da tabela -->
                 <div class="search-container">
                     <input type="text" id="searchInput" onkeyup="filtrarTabela()" placeholder="🔍 Pesquisar por ID, Nome, Status ou Responsável...">
                 </div>

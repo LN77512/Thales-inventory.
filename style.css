@@ -67,7 +67,7 @@ body {
     box-shadow: 0 0 5px rgba(0, 85, 165, 0.3);
 }
 
-.btn-login, .btn-salvar {
+.btn-login {
     width: 100%;
     padding: 11px;
     background-color: #003366;
@@ -80,7 +80,7 @@ body {
     transition: background 0.3s;
 }
 
-.btn-login:hover, .btn-salvar:hover {
+.btn-login:hover {
     background-color: #002244;
 }
 
@@ -108,6 +108,10 @@ header {
     margin-bottom: 25px;
 }
 
+header h1 {
+    font-size: 22px;
+}
+
 .btn-logout {
     background-color: #d9534f;
     color: white;
@@ -131,36 +135,54 @@ header {
     margin-bottom: 25px;
 }
 
-.form-section h2, .table-section h2 {
-    margin-bottom: 15px;
-    color: #003366;
-    font-size: 18px;
+/* Formulário na Horizontal como tinha antes */
+.form-grid-horizontal {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1.5fr 2fr auto;
+    gap: 12px;
+    align-items: center;
 }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    margin-bottom: 15px;
+.form-grid-horizontal .input-group {
+    margin-bottom: 0;
+}
+
+.btn-salvar {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    height: 41px;
+}
+
+.btn-salvar:hover {
+    background-color: #218838;
 }
 
 /* Estilo da Barra de Pesquisa */
 .search-container {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .search-container input {
     width: 100%;
-    padding: 10px 14px;
+    padding: 12px 15px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 6px;
     outline: none;
     transition: all 0.3s ease;
+    background-color: #fafafa;
 }
 
 .search-container input:focus {
     border-color: #0055a5;
+    background-color: #fff;
     box-shadow: 0 0 5px rgba(0, 85, 165, 0.2);
 }
 
@@ -181,8 +203,25 @@ table th, table td {
 }
 
 table th {
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: #343a40;
+    color: white;
+}
+
+/* Botões de Ação na Tabela */
+.btn-editar {
+    background-color: #f0ad4e;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.btn-editar:hover {
+    background-color: #ec971f;
 }
 
 .btn-remover {
@@ -193,8 +232,19 @@ table th {
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
+    font-weight: bold;
 }
 
 .btn-remover:hover {
     background-color: #c9302c;
+}
+
+/* Responsivo para telemóveis */
+@media (max-width: 900px) {
+    .form-grid-horizontal {
+        grid-template-columns: 1fr;
+    }
+    .btn-salvar {
+        width: 100%;
+    }
 }
