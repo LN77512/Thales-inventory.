@@ -3,8 +3,8 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtYpNoU1FvhZGCayh9B
 function tentarLogin(event) {
   event.preventDefault();
   
-  const usuario = document.getElementById("login-user").value.trim();
-  const palavraPasse = document.getElementById("login-pass").value.trim();
+  const usuario = document.getElementById("usr-field").value.trim();
+  const palavraPasse = document.getElementById("pwd-field").value.trim();
 
   // Credenciais estritas exigidas para entrar
   if (usuario === "@Thales" && palavraPasse === "@Thales2026!") {

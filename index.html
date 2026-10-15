@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THALES Information Systems - Inventário</title>
-    <link rel="stylesheet" href="style.css?v=2.7">
+    <link rel="stylesheet" href="style.css?v=2.8">
 </head>
 <body>
 
@@ -16,13 +16,13 @@
             
             <form onsubmit="tentarLogin(event)">
                 <div class="input-group">
-                    <label for="login-user">Nome de Utilizador / E-mail:</label>
-                    <input type="text" id="login-user" required autocomplete="new-password">
+                    <label for="usr-field">Nome de Utilizador / E-mail:</label>
+                    <input type="text" id="usr-field" required autocomplete="off" name="no_autofill_usr">
                 </div>
                 
                 <div class="input-group">
-                    <label for="login-pass">Palavra-passe:</label>
-                    <input type="password" id="login-pass" required autocomplete="new-password">
+                    <label for="pwd-field">Palavra-passe:</label>
+                    <input type="password" id="pwd-field" required autocomplete="off" name="no_autofill_pwd">
                 </div>
                 
                 <button type="submit" class="btn-login">Entrar</button>
@@ -39,15 +39,15 @@
         <main>
             <!-- Formulário de Registo / Adição -->
             <form id="inventory-form" onsubmit="salvarItem(event)" class="form-container">
-                <input type="text" id="nome" placeholder="Nome do Equipamento" required autocomplete="new-password">
-                <input type="number" id="quantidade" placeholder="Quantidade" required min="1" autocomplete="new-password">
+                <input type="text" id="nome" placeholder="Nome do Equipamento" required autocomplete="off" name="item_name_rand">
+                <input type="number" id="quantidade" placeholder="Quantidade" required min="1" autocomplete="off" name="item_qty_rand">
                 <select id="status" required>
                     <option value="" disabled selected>Selecione o Status</option>
                     <option value="Disponível">Disponível</option>
                     <option value="Em Uso">Em Uso</option>
                     <option value="Manutenção">Manutenção</option>
                 </select>
-                <input type="text" id="responsavel" placeholder="Responsável" required autocomplete="new-password">
+                <input type="text" id="responsavel" placeholder="Responsável" required autocomplete="off" name="item_resp_rand">
                 <button type="submit" class="btn-adicionar">Adicionar</button>
             </form>
 
@@ -72,6 +72,6 @@
         </main>
     </div>
 
-    <script src="script.js?v=2.7"></script>
+    <script src="script.js?v=2.8"></script>
 </body>
 </html>
