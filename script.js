@@ -1,124 +1,149 @@
-const URL_API = "https://script.google.com/macros/s/AKfycbwtYpNoU1FvhZGCayh9BVICbfoZUJbXENpc4bJz6NrdAbEPQ-jJ80ZoVeNGLL8kGQk5/exec";
+// URL da API do Google Apps Script
+const API_URL = "https://script.google.com/macros/s/AKfycbwtYpNoU1FvhZGCayh9BVICBfoZUJbXENpc4bJz6NrdAbEPQ-jJ80ZoVeNGLL8kGQk5/exec";
 
-// Função de Login Seguro via Servidor
-function realizarLogin(event) {
-    event.preventDefault();
-    const user = document.getElementById('username').value;
-    const pass = document.getElementById('password').value;
-    const errorMsg = document.getElementById('loginError');
+// Elementos do DOM
+const form = document.getElementById("inventory-form");
+const tableBody = document.getElementById("inventory-body");
 
-    errorMsg.textContent = "A validar acesso...";
+// Função de Login Segura (Validada no Servidor)
+async function tentarLogin(event) {
+  if (event) event.preventDefault();
+  
+  const userInput = document.getElementById("login-user")?.value.trim() || "";
+  const passInput = document.getElementById("login-pass")?.value.trim() || "";
 
-    fetch(URL_API, {
-        method: "POST",
-        body: JSON.stringify({ acao: "login", usuario: user, senha: pass })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.sucesso) {
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('appContainer').style.display = 'block';
-            carregarItens();
-        } else {
-            errorMsg.textContent = "Utilizador ou palavra-passe incorretos!";
-        }
-    })
-    .catch(error => {
-        console.error("Erro no login:", error);
-        errorMsg.textContent = "Erro ao ligar ao servidor.";
-    });
+  try {
+    const response = await fetch(`${API_URL}?action=login&user=${encodeURIComponent(userInput)}&pass=${encodeURIComponent(passInput)}`);
+    const resultado = await response.json();
+
+    if (resultado.status === "sucesso") {
+      const modalLogin = document.getElementById("login-modal") || document.querySelector(".login-box")?.parentElement;
+      if (modalLogin) modalLogin.style.display = "none";
+      
+      const appContainer = document.getElementById("app-container");
+      if (appContainer) appContainer.style.display = "block";
+      
+      carregarEquipamentos();
+    } else {
+      alert("Credenciais incorretas.");
+    }
+  } catch (error) {
+    console.error("Erro ao validar login:", error);
+    alert("Erro de conexão ao tentar fazer login.");
+  }
 }
 
-function realizarLogout() {
-    document.getElementById('appContainer').style.display = 'none';
-    document.getElementById('loginScreen').style.display = 'flex';
-    document.getElementById('loginForm').reset();
-    document.getElementById('loginError').textContent = "";
-}
-
-// Carregar dados da tabela do inventário
-function carregarItens() {
-    fetch(URL_API + "?acao=listar")
-    .then(response => response.json())
-    .then(data => {
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = "";
-        
-        data.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${item.id}</td>
-                <td>${item.nome}</td>
-                <td>${item.quantidade}</td>
-                <td>${item.status}</td>
-                <td>${item.responsavel}</td>
-                <td>
-                    <button class="btn-editar" onclick="preencherEdicao('${item.id}', '${item.nome}', '${item.quantidade}', '${item.status}', '${item.responsavel}')">Editar</button>
-                    <button class="btn-remover" onclick="removerItem('${item.id}')">Remover</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-    })
-    .catch(error => console.error("Erro ao carregar itens:", error));
-}
-
-// Guardar ou atualizar um item
-function salvarItem(event) {
-    event.preventDefault();
+// Função para carregar os equipamentos da folha de cálculo
+async function carregarEquipamentos() {
+  if (!tableBody) return;
+  try {
+    const response = await fetch(`${API_URL}?action=ler`);
+    const dados = await response.json();
     
-    const dadosItem = {
-        acao: "salvar",
-        id: document.getElementById('itemId').value,
-        nome: document.getElementById('itemNome').value,
-        quantidade: document.getElementById('itemQtd').value,
-        status: document.getElementById('itemStatus').value,
-        responsavel: document.getElementById('itemResp').value
+    tableBody.innerHTML = ""; // Limpa a tabela antes de preencher
+
+    if (!dados || dados.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #777;">Nenhum equipamento registado.</td></tr>`;
+      return;
+    }
+
+    dados.forEach((item) => {
+      const row = document.createElement("tr");
+      row.id = `row-${item.id}`;
+      row.innerHTML = `
+        <td>${item.id}</td>
+        <td>${item.nome}</td>
+        <td>${item.quantidade}</td>
+        <td>${item.status}</td>
+        <td>${item.responsavel}</td>
+        <td>
+          <button class="btn-edit" onclick="prepararEdicao(${item.id}, '${item.nome}', '${item.quantidade}', '${item.status}', '${item.responsavel}')">Editar</button>
+          <button class="btn-delete" onclick="removerEquipamento(${item.id})">Remover</button>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+  } catch (error) {
+    console.error("Erro ao carregar dados:", error);
+  }
+}
+
+// Função para preencher o formulário com os dados para edição
+function prepararEdicao(id, nome, quantidade, status, responsavel) {
+  document.getElementById("nome").value = nome;
+  document.getElementById("quantidade").value = quantidade;
+  document.getElementById("status").value = status;
+  document.getElementById("responsavel").value = responsavel;
+
+  form.dataset.editId = id;
+  const btnSubmit = form.querySelector("button[type='submit']");
+  if (btnSubmit) btnSubmit.textContent = "Atualizar";
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Função para adicionar ou atualizar um equipamento
+if (form) {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const editId = form.dataset.editId;
+    const nome = document.getElementById("nome").value;
+    const quantidade = document.getElementById("quantidade").value;
+    const status = document.getElementById("status").value;
+    const responsavel = document.getElementById("responsavel").value;
+
+    const acao = editId ? "atualizar" : "adicionar";
+    
+    const dadosEquipamento = {
+      action: acao,
+      id: editId ? Number(editId) : undefined,
+      nome,
+      quantidade,
+      status,
+      responsavel
     };
 
-    fetch(URL_API, {
+    // Reseta o formulário e limpa o estado de edição imediatamente
+    form.reset();
+    delete form.dataset.editId;
+    const btnSubmit = form.querySelector("button[type='submit']");
+    if (btnSubmit) btnSubmit.textContent = "Adicionar";
+
+    try {
+      await fetch(API_URL, {
         method: "POST",
-        body: JSON.stringify(dadosItem)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.sucesso) {
-            document.getElementById('inventoryForm').reset();
-            document.getElementById('itemId').readOnly = false;
-            carregarItens();
-        } else {
-            alert("Erro ao guardar item.");
-        }
-    })
-    .catch(error => console.error("Erro:", error));
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(dadosEquipamento)
+      });
+
+      setTimeout(carregarEquipamentos, 1000);
+    } catch (error) {
+      console.error("Erro ao salvar equipamento:", error);
+      carregarEquipamentos();
+    }
+  });
 }
 
-// Preencher o formulário para edição rápida
-function preencherEdicao(id, nome, quantidade, status, responsavel) {
-    document.getElementById('itemId').value = id;
-    document.getElementById('itemId').readOnly = true;
-    document.getElementById('itemNome').value = nome;
-    document.getElementById('itemQtd').value = quantidade;
-    document.getElementById('itemStatus').value = status;
-    document.getElementById('itemResp').value = responsavel;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+// Função para remover um equipamento
+async function removerEquipamento(id) {
+  if (!confirm("Tem a certeza de que deseja remover este equipamento?")) return;
 
-// Remover um item
-function removerItem(id) {
-    if (!confirm("Tem certeza que deseja remover este item?")) return;
+  const rowTarget = document.getElementById(`row-${id}`);
+  if (rowTarget) rowTarget.style.opacity = "0.3";
 
-    fetch(URL_API, {
-        method: "POST",
-        body: JSON.stringify({ acao: "remover", id: id })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.sucesso) {
-            carregarItens();
-        } else {
-            alert("Erro ao remover item.");
-        }
-    })
-    .catch(error => console.error("Erro:", error));
+  try {
+    await fetch(API_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "remover", id: id })
+    });
+
+    setTimeout(carregarEquipamentos, 1000);
+  } catch (error) {
+    console.error("Erro ao remover equipamento:", error);
+    carregarEquipamentos();
+  }
 }
