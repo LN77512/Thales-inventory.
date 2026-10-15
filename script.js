@@ -6,7 +6,7 @@ function tentarLogin(event) {
   const usuario = document.getElementById("login-user").value.trim();
   const palavraPasse = document.getElementById("login-pass").value.trim();
 
-  // Defina aqui as credenciais corretas de acesso
+  // Credenciais estritas exigidas para entrar
   if (usuario === "@Thales" && palavraPasse === "@Thales2026!") {
     document.getElementById("login-modal").style.display = "none";
     document.getElementById("app-container").style.display = "block";
