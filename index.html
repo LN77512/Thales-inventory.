@@ -89,7 +89,7 @@
         margin: 0 auto;
     }
     h1 {
-        color: #003366;
+        color: #ffffff;
         margin-bottom: 20px;
         font-size: 24px;
     }
@@ -161,6 +161,7 @@
 </head>
 <body>
 
+  <!-- Ecrã de Login -->
   <div id="login-modal">
     <div class="login-box">
       <h2>THALES</h2>
@@ -169,12 +170,12 @@
       <form id="login-form" onsubmit="tentarLogin(event)">
         <div class="input-group">
           <label for="login-user">Nome de Utilizador / E-mail:</label>
-          <input type="text" id="login-user" required>
+          <input type="text" id="login-user" required autocomplete="off">
         </div>
         
         <div class="input-group">
           <label for="login-pass">Palavra-passe:</label>
-          <input type="password" id="login-pass" required placeholder="********">
+          <input type="password" id="login-pass" required placeholder="********" autocomplete="new-password">
         </div>
         
         <button type="submit" class="btn-login">Entrar</button>
@@ -182,6 +183,7 @@
     </div>
   </div>
 
+  <!-- Painel Principal do Inventário -->
   <div id="app-container" style="display: none;">
     <h1>THALES Information Systems - Inventário</h1>
     
@@ -214,6 +216,6 @@
     </table>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
