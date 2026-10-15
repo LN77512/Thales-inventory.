@@ -7,8 +7,11 @@ function tentarLogin(event) {
   const palavraPasse = document.getElementById("login-pass").value;
 
   if (usuario.trim() !== "" && palavraPasse.trim() !== "") {
+    // Esconde o modal de login e mostra o painel principal
     document.getElementById("login-modal").style.display = "none";
     document.getElementById("app-container").style.display = "block";
+    
+    // Carrega os dados do Google Sheets
     carregarItens();
   } else {
     alert("Por favor, preencha todos os campos de login.");

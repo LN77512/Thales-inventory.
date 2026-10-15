@@ -11,7 +11,6 @@ body {
     padding: 20px;
 }
 
-/* Ecrã de Login */
 #login-modal {
     display: flex;
     justify-content: center;
@@ -90,7 +89,6 @@ body {
     background-color: #002244;
 }
 
-/* Painel Principal */
 #app-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -102,7 +100,6 @@ h1 {
     font-size: 24px;
 }
 
-/* Formulário de Inventário */
 #inventory-form {
     display: flex;
     gap: 10px;
@@ -140,7 +137,6 @@ h1 {
     background-color: #218838;
 }
 
-/* Tabela de Inventário */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -162,7 +158,6 @@ table th {
     color: white;
 }
 
-/* Botões de Ação na Tabela */
 .btn-remover {
     background-color: #d9534f;
     color: white;
