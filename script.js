@@ -3,15 +3,16 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtYpNoU1FvhZGCayh9B
 function tentarLogin(event) {
   event.preventDefault();
   
-  const usuario = document.getElementById("login-user").value;
-  const palavraPasse = document.getElementById("login-pass").value;
+  const usuario = document.getElementById("login-user").value.trim();
+  const palavraPasse = document.getElementById("login-pass").value.trim();
 
-  if (usuario.trim() !== "" && palavraPasse.trim() !== "") {
+  // Defina aqui as credenciais corretas de acesso
+  if (usuario === "@Thales" && palavraPasse === "@Thales2026!") {
     document.getElementById("login-modal").style.display = "none";
     document.getElementById("app-container").style.display = "block";
     carregarItens();
   } else {
-    alert("Por favor, preencha todos os campos de login.");
+    alert("Utilizador ou palavra-passe incorretos. Tente novamente.");
   }
 }
 
@@ -65,7 +66,7 @@ function salvarItem(event) {
   })
   .then(() => {
     document.getElementById("inventory-form").reset();
-    setTimeout(carregarItens, 1500); // Aguarda 1.5s para a folha atualizar e recarrega os dados
+    setTimeout(carregarItens, 1500);
   })
   .catch(error => console.error("Erro ao salvar item:", error));
 }
