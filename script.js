@@ -1,5 +1,4 @@
-// ATENÇÃO: Mantenha aqui o link do seu Web App do Google Apps Script
-const URL_API = "COLOQUE_AQUI_O_LINK_DO_SEU_WEB_APP_DO_APPS_SCRIPT";
+const URL_API = "https://script.google.com/macros/s/AKfycbwtYpNoU1FvhZGCayh9BVICbfoZUJbXENpc4bJz6NrdAbEPQ-jJ80ZoVeNGLL8kGQk5/exec";
 
 // Função de Login Seguro via Servidor
 function realizarLogin(event) {
@@ -122,29 +121,4 @@ function removerItem(id) {
         }
     })
     .catch(error => console.error("Erro:", error));
-}
-
-// Função para filtrar a tabela em tempo real com a barra de pesquisa
-function filtrarTabela() {
-    const input = document.getElementById('searchInput');
-    const filter = input.value.toLowerCase();
-    const tbody = document.getElementById('tableBody');
-    const linhas = tbody.getElementsByTagName('tr');
-
-    for (let i = 0; i < linhas.length; i++) {
-        const colunas = linhas[i].getElementsByTagName('td');
-        let encontrou = false;
-
-        for (let j = 0; j < colunas.length - 1; j++) { // Ignora a coluna de ações
-            if (colunas[j]) {
-                const textoColuna = colunas[j].textContent || colunas[j].innerText;
-                if (textoColuna.toLowerCase().indexOf(filter) > -1) {
-                    encontrou = true;
-                    break;
-                }
-            }
-        }
-
-        linhas[i].style.display = encontrou ? "" : "none";
-    }
 }
