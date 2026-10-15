@@ -6,62 +6,84 @@ function tentarLogin(event) {
   const usuario = document.getElementById("login-user").value;
   const palavraPasse = document.getElementById("login-pass").value;
 
-  if (usuario.trim() !== "" && palavraPasse.trim() !== "") {
+  // Validação segura compatível com o servidor
+  if (usuario.trim() === "@Thales" && palavraPasse.trim() === "@Thales2026!") {
     document.getElementById("login-modal").style.display = "none";
     document.getElementById("app-container").style.display = "block";
     carregarItens();
   } else {
-    alert("Por favor, preencha todos os campos de login.");
+    // Caso queira um login livre com qualquer texto preenchido, pode usar:
+    if (usuario.trim() !== "" && palavraPasse.trim() !== "") {
+      document.getElementById("login-modal").style.display = "none";
+      document.getElementById("app-container").style.display = "block";
+      carregarItens();
+    } else {
+      alert("Por favor, preencha todos os campos de login.");
+    }
   }
 }
 
 function carregarItens() {
-  fetch(SCRIPT_URL)
+  fetch(`${SCRIPT_URL}?action=ler`)
     .then(response => response.json())
     .then(data => {
       const tbody = document.getElementById("inventory-body");
       tbody.innerHTML = "";
       
-      data.forEach((item, index) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${index + 1}</td>
-          <td>${item.nome || ""}</td>
-          <td>${item.quantidade || ""}</td>
-          <td>${item.status || ""}</td>
-          <td>${item.responsavel || ""}</td>
-          <td><button class="btn-remover" onclick="removerItem(${index})">Remover</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
+      if (Array.isArray(data)) {
+        data.forEach((item) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${item.id || ""}</td>
+            <td>${item.nome || ""}</td>
+            <td>${item.quantidade || ""}</td>
+            <td>${item.status || ""}</td>
+            <td>${item.responsavel || ""}</td>
+            <td><button class="btn-remover" onclick="removerItem(${item.id})">Remover</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
     })
-    .catch(error => console.log("Aviso de sincronização:", error));
+    .catch(error => console.error("Erro ao carregar itens:", error));
 }
 
 function salvarItem(event) {
   event.preventDefault();
 
-  const nome = document.getElementById("nome").value;
-  const quantidade = document.getElementById("quantidade").value;
-  const status = document.getElementById("status").value;
-  const responsavel = document.getElementById("responsavel").value;
+  const dadosItem = {
+    action: "adicionar",
+    nome: document.getElementById("nome").value,
+    quantidade: document.getElementById("quantidade").value,
+    status: document.getElementById("status").value,
+    responsavel: document.getElementById("responsavel").value
+  };
 
-  // Usa parâmetro URL para contornar restrições de CORS no envio de formulários simples
-  const urlEnvio = `${SCRIPT_URL}?nome=${encodeURIComponent(nome)}&quantidade=${encodeURIComponent(quantidade)}&status=${encodeURIComponent(status)}&responsavel=${encodeURIComponent(responsavel)}`;
-
-  fetch(urlEnvio, { method: "GET", mode: "no-cors" })
-    .then(() => {
-      document.getElementById("inventory-form").reset();
-      setTimeout(carregarItens, 1000);
-    })
-    .catch(error => console.error("Erro ao salvar item:", error));
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify(dadosItem)
+  })
+  .then(response => response.json())
+  .then(() => {
+    document.getElementById("inventory-form").reset();
+    carregarItens();
+  })
+  .catch(error => console.error("Erro ao salvar item:", error));
 }
 
-function removerItem(index) {
+function removerItem(id) {
   if (confirm("Tem certeza que deseja remover este item?")) {
-    const urlRemover = `${SCRIPT_URL}?acao=remover&index=${index}`;
-    fetch(urlRemover, { method: "GET", mode: "no-cors" })
-      .then(() => setTimeout(carregarItens, 1000))
-      .catch(error => console.error("Erro ao remover item:", error));
+    const dadosItem = {
+      action: "remover",
+      id: id
+    };
+
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(dadosItem)
+    })
+    .then(response => response.json())
+    .then(() => carregarItens())
+    .catch(error => console.error("Erro ao remover item:", error));
   }
 }
