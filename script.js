@@ -4,7 +4,7 @@ function tentarLogin(event) {
   event.preventDefault();
   
   const usuario = document.getElementById("login-user").value.trim();
-  const palavraPasse = document.getElementById("login-pass").value.trim();
+  const palavraPasse = document.getElementById("codigo-secreto").value.trim();
 
   // Credenciais estritas exigidas para entrar
   if (usuario === "@Thales" && palavraPasse === "@Thales2026!") {
